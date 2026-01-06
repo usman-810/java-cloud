@@ -27,6 +27,9 @@ phases:
       - docker tag $ECR_REGISTRY/$ECR_REPO:$BACKEND_IMAGE_NAME-$IMAGE_TAG $ECR_REGISTRY/$ECR_REPO:$BACKEND_IMAGE_NAME-latest
 
       - echo "Build frontend image..."
+      - pwd
+- ls -la
+- find . -maxdepth 3 -name Dockerfile -o -name "dockerfile"
       - docker build -t $ECR_REGISTRY/$ECR_REPO:$FRONTEND_IMAGE_NAME-$IMAGE_TAG -f frontend/Dockerfile frontend
       - docker tag $ECR_REGISTRY/$ECR_REPO:$FRONTEND_IMAGE_NAME-$IMAGE_TAG $ECR_REGISTRY/$ECR_REPO:$FRONTEND_IMAGE_NAME-latest
 
