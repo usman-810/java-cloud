@@ -1,0 +1,20 @@
+# ---- Build stage (Java 8 + Maven) ----
+FROM maven:3.8.8-eclipse-temurin-8 AS build
+WORKDIR /app
+
+COPY pom.xml .
+RUN mvn -q -DskipTests dependency:go-offline
+
+COPY src ./src
+RUN mvn -q -DskipTests package
+
+# ---- Run stage (Java 8 JRE) ----
+FROM eclipse-temurin:8-jre
+WORKDIR /app
+
+COPY --from=build /app/target/*.jar app.jar
+
+# Spring Boot default port
+EXPOSE 8080
+
+ENTRYPOINT ["java","-jar","app.jar"]
